@@ -1,0 +1,44 @@
+CFLAGS=-DMSDOS -I. -c -DDIRSEP='\\' -w-
+
+all:	extra.lib
+
+OBJS=	link.obj config.obj pwd.obj reg.obj regcompat.obj regexp.obj \
+	termcap.obj getopt.obj popen.obj strrev.obj printex.obj
+
+extra.lib:	$(OBJS)
+	-del extra.lib
+	tlib extra.lib +link.obj +config.obj +pwd.obj +reg.obj
+	tlib extra.lib +regcompat.obj +regexp.obj +termcap.obj +getopt.obj +popen.obj
+	tlib extra.lib +strrev.obj +printex.obj
+
+link.obj:	link.c
+
+config.obj:	config.c
+
+pwd.obj:	pwd.c
+
+reg.obj:	reg.c
+
+regcompat.obj:	regcompat.c
+
+regexp.obj:	regexp.c
+
+termcap.obj:	termcap.c
+
+getopt.obj:	getopt.c
+
+popen.obj:	popen.c
+
+strrev.obj:	strrev.c
+
+printex.obj:	printex.c
+
+qsort.obj:     qsort.c
+
+clean:
+	-del *.bak
+	-del *.map
+	-del *.exe
+	-del *.obj
+	-del *.lib
+

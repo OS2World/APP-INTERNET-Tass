@@ -1,0 +1,46 @@
+CC= gcc
+CFLAGS=-DMSDOS -I. -DDIRSEP='\\' 
+
+all:	extra.a
+
+#reg.o regcompat.o regexp.o popen.o
+OBJS=	link.o config.o pwd.o termcap.o getopt.o strrev.o printex.o \
+	nntplib.o
+
+#ar rv extra.a regcompat.o regexp.o reg.o popen.o
+extra.a:	$(OBJS)
+	-rm extra.a
+	ar rv extra.a link.o config.o pwd.o termcap.o getopt.o 
+	ar rv extra.a strrev.o printex.o nntplib.o
+
+link.o:	link.c
+
+config.o:	config.c
+
+pwd.o:	pwd.c
+
+reg.o:	reg.c
+
+regcompat.o:	regcompat.c
+
+regexp.o:	regexp.c
+
+termcap.o:	termcap.c
+
+getopt.o:	getopt.c
+
+popen.o:	popen.c
+
+strrev.o:	strrev.c
+
+printex.o:	printex.c
+
+qsort.o:     qsort.c
+
+clean:
+	-del *.bak
+	-del *.map
+	-del *.exe
+	-del *.o
+	-del *.a
+

@@ -1,0 +1,27 @@
+#
+# this is the information that tass uses from the uupc config files
+# - with the environment variables set in login.cmd this will let
+# you use tass without uupc installed.
+#
+
+Name=Michael Taylor
+Home=.
+Organization=The Internet Project PCUG/AUUG
+Mailbox=miket
+
+NodeName=miket
+Domain=pcug.org.au
+Mailserv=supreme
+Replyto=miket@pcug.org.au
+
+Signature=miket.sig
+
+NewsDir=d:\news
+SpoolDir=d:\spool
+ConfDir=d:\uupc
+TempDir=d:\temp
+MailDir=d:\user\Mail
+
+#Editor=E %s
+Editor=emacs %s
+

@@ -1,0 +1,77 @@
+
+#  Make sure LIBDIR, SPOOLDIR and MAILER are correct in tass.h
+#
+#  Make sure spool_open.c knows whether readdir returns struct direct or
+#  struct dirent.  The defines below should take care of this.
+
+#  For Berkeley systems:
+#
+# CFLAGS= -DBSD
+# LIBS= -lcurses -ltermcap
+
+#  For System V
+#
+CFLAGS=-O
+LIBS= -lcurses
+
+#  For 286 Xenix
+#
+# CFLAGS=-O -M2l -F 8000
+# LIBS= -lcurses -ltermcap -lx
+
+#  For SCO Unix System V
+#
+# CFLAGS=-O -UM_XENIX -DSCO_UNIX
+# LIBS= -lcurses -lgen
+
+
+#  You only need to worry about the following two defines if you want
+#  to build rtass (remote Tass via nntp)
+#
+# point NNTPLIB at the nntp clientlib.o support library
+#
+#NNTPLIB=../nntp/common/clientlib.o
+NNTPLIB=/usr/src/pub/news/nntp/common/clientlib.o
+#
+#  NETLIBS should be the networking libraries you need to link with
+#  the nntp clientlib.o
+#
+NETLIBS=-lnsl -lsocket
+
+
+OBJECTS	=	archive.o curses.o art.o group.o hashstr.o help.o mail.o \
+		main.o misc.o page.o post.o prompt.o screen.o select.o time.o
+
+tass: $(OBJECTS) spool_open.o
+	cc $(CFLAGS) -o tass $(OBJECTS) spool_open.o $(LIBS)
+
+rtass: $(OBJECTS) nntp_open.o
+	cc $(CFLAGS) -o rtass $(OBJECTS) nntp_open.o $(LIBS) $(NNTPLIB) $(NETLIBS)
+
+shar:
+	-mv -f ../tass.shar ../tass.shar-
+	shar -v [A-Z]* *.[ch] > ../tass.shar
+
+clean:
+	rm -f *.o
+
+clobber: clean
+	rm -f tass rtass
+
+
+art.o:		art.c tass.h
+curses.o:	curses.c
+group.o:	group.c tass.h
+hashstr.o:	hashstr.c
+help.o:		help.c tass.h
+mail.o:		mail.c
+main.o:		main.c tass.h
+misc.o:		misc.c tass.h
+nntp_open.o:	nntp_open.c tass.h nntp.h
+page.o:		page.c tass.h
+post.o:		post.c tass.h
+prompt.o:	prompt.c tass.h
+screen.o:	screen.c tass.h
+select.o:	select.c tass.h
+spool_open.o:	spool_open.c tass.h
+time.o:		time.c

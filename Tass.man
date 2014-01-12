@@ -1,0 +1,111 @@
+..TH TASS 1A
+..SH NAME
+tass, rtass \- Visual threaded Usenet news reader
+..SH SYNOPSIS
+..nf
+tass [-b] [-u] [-f newsrc-file] [newsgroups]
+rtass [-b] [-u] [-f newsrc-file] [newsgroups]
+..fi
+..SH DESCRIPTION
+Tass is a full screen threaded Usenet newsreader.
+Tass has three newsreading levels:
+the newsgroup selection page, the group index page and the article viewer.
+Use the 'h' (help) command to view a list of the commands available at a
+particular level.
+..PP
+On startup Tass will show a list of the newsgroups found in $HOME/.newsrc.
+An arrow will point to the first newsgroup.  Move the arrow by either using
+the terminal arrow keys or 'j' and 'k'.  Control-D will page down, control-U
+will page up.  Enter a newsgroup by pressing RETURN.
+..PP
+The TAB key may be used to advance to the next newsgroup with unread articles
+and enter it.  TAB from the newsgroup index page will progress through unread
+articles.  After having read all of the new articles in a group, TAB will
+then advance to the next newsgroup with unread articles.
+..PP
+rtass will attempt to connect to the NNTP port on the machine named in the
+environment variable NNTPSERVER or contained in the file /etc/nntpserver.
+rtass will index somewhat slower because the articles must be retrieved
+via the NNTP protocol.
+..PP
+Refer to the Tass help screens for further commands.
+..SH TASS INDEX FILES
+In order to keep track of threads, Tass maintains an index for each group.
+If Tass is made setuid to news, the indexes will be stored in the news spool
+directory (typically /usr/spool/news).  If
+Tass is not setuid, it will store
+index files in the user's home directory, in a subdirectory called .tindx.
+..PP
+Entering a group the first time tends to be slow because the index file must
+be built from scratch.  Subsequent readings of a group will cause
+Tass to incrementally update the index file, adding or removing entries as new
+articles come in or as news expires.
+..PP
+Tass may be run in update mode (the -u option) to update a series of groups
+at one time.  tass -u is usually run from cron.
+..PP
+Do not make rtass setuid news since news will be obtained via NNTP and not
+from /usr/spool/news.
+..SH SIGNATURES
+Tass will recognize a signature in either $HOME/.signature or $HOME/.Sig.
+If .signature exists, then the signature will be pulled into the editor
+for Tass mail commands.  A signature in .signature will not be pulled
+into the editor for posting commands since the inews program
+will append the signature itself.
+..PP
+A signature in .Sig will be pulled into the editor for both posting
+and mailing commands.
+..SH "ENVIRONMENT VARIABLES"
+..TP
+EDITOR
+Which editor to use.  Defaults to /usr/bin/vi unless your administrator has
+changed it.
+..TP
+SHELL
+Which shell to use for sub-shells.  Usually set as your login shell
+automatically; otherwise defaults to /bin/sh.
+..TP
+TASS_BACKWARDS
+Users uncomfortable with newsreaders other than rn may set the environment
+variable TASS_BACKWARDS, which will switch the following pairs of keys:
+
+..nf
+		space and tab
+		n and N
+		p and P
+..fi
+
+Invoking tass with -b has the same effect as setting TASS_BACKWARDS.
+..SH OPTIONS
+..I Tass
+recognizes the following options:
+..TP
+-b
+Turns on the TASS_BACKWARDS option (see above).
+..TP
+-f file
+Use the indicated file in place of $HOME/.newsrc.
+..TP
+-u
+Run Tass in update mode.  Tass will make indexes current for every group
+in its .newsrc.
+
+A good way to keep Tass index files current is to run tass -u from cron:
+
+..nf
+20 6 * * *	/usr/local/bin/tass -u -f /usr/lib/news/tass_groups
+..fi
+
+This would update the index files for those groups appearing in
+/usr/lib/news/tass_groups.  To index all of the groups on the system,
+run tass -u with -f indicating the active file:
+
+..nf
+20 6 * * *	/usr/local/bin/tass -u -f /usr/lib/news/active
+..fi
+
+..SH AUTHOR
+..nf
+Rich Skrenta
+skrenta@blekko.commodore.com or skrenta@blekko.uucp.
+..fi

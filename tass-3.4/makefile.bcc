@@ -1,0 +1,34 @@
+# makefile for tass for os2 and Borland C++ V2.0
+
+CC=bcc
+CFLAGS=-w-pro -w-rvl -w-cpt -w-rpt -I..\unix -DOS2 -Ot
+LIBS= 
+
+OBJECTS	=	archive.obj group.obj hashstr.obj mail.obj main.obj misc.obj \
+		post.obj page.obj prompt.obj screen.obj select.obj time.obj \
+		art.obj help.obj
+EXTRAOBJS = 	curses.obj ..\unix\extra.lib
+
+tass: $(OBJECTS) $(EXTRAOBJS) spool_open.obj
+	$(CC) -M -ls -etass.exe $(OBJECTS) spool_open.obj $(EXTRAOBJS) $(LIBS)
+
+art.obj:	art.c tass.h
+curses.obj:	curses.c
+group.obj:	group.c tass.h
+mail.obj:	mail.c
+main.obj:	main.c tass.h
+misc.obj:	misc.c tass.h
+page.obj:	page.c tass.h
+prompt.obj:	prompt.c tass.h
+screen.obj:	screen.c tass.h
+select.obj:	select.c tass.h
+spool_open.obj:	spool_open.c tass.h
+time.obj:	time.c
+post.obj:	post.c tass.h
+
+clean:
+	-del *.bak
+	-del *.map
+	-del *.exe
+	-del *.obj
+	-del *.lib
